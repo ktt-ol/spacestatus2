@@ -1,0 +1,11 @@
+[Unit]
+Description=Space status v2
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=30s
+ExecStart=/path/to/status2
+
+[Install]
+WantedBy=multi-user.target

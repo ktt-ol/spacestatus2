@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Space Status</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="../assets/styles/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/styles/basics.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button"
+                    onclick="document.getElementById('navbar-main').classList.toggle('in')">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="//mainframe.io" class="navbar-brand">
+                <img src="../assets/images/top_logo.png" alt="Mainframe"/>
+            </a>
+        </div>
+        <div class="navbar-collapse collapse" ng-class="isCollapsed ? '' : 'in'" id="navbar-main">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="/">Status</a>
+                </li>
+                <li>
+                    <a href="/openStats">Öffnungsstatistiken</a>
+                </li>
+            </ul>
+            <ul id="inprintLink" class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="//www.kreativitaet-trifft-technik.de/impressum" class="navbar-link">Impressum</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid page-status">
+
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-1 col-md-7 ng-cloak">
+
+            <h2>Status</h2>
+
+            <div class="alert alert-warning connection-error-warning">
+                Ich habe die Verbindung zum Server verloren. :( <br/>
+                Aber ich versuche es gleich noch einmal!
+            </div>
+
+            <div class="alert alert-warning startup-error-warning">
+                <strong>Keine Verbindung</strong>
+                Ich konnte keine Verbindung zum Server herstellen.
+                <div class="https-hint" ng-if="isHttp">
+                    <strong>Tipp:</strong> Häufig hilft ein <a href="https://status.ktt-ol.de">Wechsel auf https</a>
+                </div>
+            </div>
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Mainframe Status [ <a href="//mainframe.io">Homepage</a> ]</th>
+                </tr>
+                </thead>
+                <tbody class="blank-on-disconnect">
+                <tr>
+                    <td>Letzte Änderung</td>
+                    <td id="spaceOpen_lu">-</td>
+                </tr>
+                <tr id="spaceOpen_style">
+                    <td>Status</td>
+                    <td id="spaceOpen_status">-</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><a href="/openStats">Langfristige Statistiken</a></td>
+                </tr>
+                <tr id="spaceBrokerOnline_style">
+                    <td>Internet*</td>
+                    <td id="spaceBrokerOnline_status">-</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">3D-Lab Status</th>
+                </tr>
+                </thead>
+                <tbody class="blank-on-disconnect">
+                <tr>
+                    <td>Letzte Änderung</td>
+                    <td id="lab3dOpen_lu">-</td>
+                </tr>
+                <tr id="lab3dOpen_style">
+                    <td>Status</td>
+                    <td id="lab3dOpen_status">-</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Machining Status</th>
+                </tr>
+                </thead>
+                <tbody class="blank-on-disconnect">
+                <tr>
+                    <td>Letzte Änderung</td>
+                    <td id="machining_lu"></td>
+                </tr>
+                <tr id="machining_style">
+                    <td>Status</td>
+                    <td id="machining_status">-</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Radstelle Status</th>
+                </tr>
+                </thead>
+                <tbody class="blank-on-disconnect">
+                <tr>
+                    <td>Letzte Änderung</td>
+                    <td id="radstelleOpen_lu">-</td>
+                </tr>
+                <tr id="radstelleOpen_style">
+                    <td>Status</td>
+                    <td id="radstelleOpen_status">-</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Leute im Space</th>
+                </tr>
+                </thead>
+                <tbody class="blank-on-disconnect">
+                <tr>
+                    <td>Letzte Änderung</td>
+                    <td id="spaceDevices_lu">-</td>
+                </tr>
+                <tr>
+                    <td>
+                        Wer ist da<br>
+                        (Orte:
+                        <span class="location Space loc-legend">Space</span>
+                        <span class="location Radstelle loc-legend">Radstelle</span>
+                        <span class="location Fräse loc-legend">Fräse</span>)
+
+                    </td>
+                    <td>
+                        <div class="person-list" id="personList">-</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>+ anonyme Personen</td>
+                    <td id="anonPeopleCount">-</td>
+                </tr>
+                <tr>
+                    <td>+ unbekannte Geräte</td>
+                    <td id="devicesCount">-</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">
+                        Stromverbrauch [ <a href="https://grafana.mainframe.io/dashboard/db/energy">Live/Detail
+                        stats</a> ]
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="blank-on-disconnect">
+                <tr>
+                    <td>Letzte Änderung</td>
+                    <td id="energyFront_lu">-</td>
+                </tr>
+                <tr>
+                    <td>Vorne</td>
+                    <td><span id="energyFront">-</span> W</td>
+                </tr>
+                <tr>
+                    <td>Letzte Änderung</td>
+                    <td id="energyBack_lu">-</td>
+                </tr>
+                <tr>
+                    <td>Hinten</td>
+                    <td><span id="energyBack">-</span> W</td>
+                </tr>
+                </tbody>
+            </table>
+
+
+            <div class="status-legend">* Wir prüfen hier nur, ob der MQTT Server auf spacegate verfügbar ist. Das
+                korreliert
+                normalerweise sehr gut mit dem Internetstatus.
+            </div>
+        </div>
+        <div class="col-sm-4 sidebar">
+            <ul class="list-unstyled">
+                <li><a href="//mainframe.io" id="mainframeLogo"><img src="assets/images/mainframe.png" alt="Mainframe"/></a>
+                </li>
+                <li><a href="//ktt-ol.de" id="fabolabLogo"><img src="assets/images/fab-o-lab.png"
+                                                                alt="Fab-O-Lab"/></a><br/>
+                </li>
+                <li><a href="/api/spaceInfo">spaceInfo</a> (<a href="http://spaceapi.net/">Space API</a>)<br/></li>
+                <li><a href="https://twitter.com/#!/HackspaceOL">@HackspaceOL</a></li>
+                <li><a href="https://twitter.com/#!/KtT_OL">@KtT_OL</a></li>
+                <li><a href="xmpp://mainframe@jabber.ccc.de">mainframe@jabber.ccc.de</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        Mainframe Spacestatus - <a href="//github.com/ktt-ol/spacestatus">github.com/ktt-ol/spacestatus</a>
+    </div>
+</footer>
+
+<script src="assets/js/status.js"></script>
+<script>statusInit();</script>
+
+
+</body>
+</html>

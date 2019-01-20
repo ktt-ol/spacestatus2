@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Space Status</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="assets/styles/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/styles/basics.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button"
+                    onclick="document.getElementById('navbar-main').classList.toggle('in')">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="//mainframe.io" class="navbar-brand">
+                <img src="assets/images/top_logo.png" alt="Mainframe"/>
+            </a>
+        </div>
+        <div class="navbar-collapse collapse" ng-class="isCollapsed ? '' : 'in'" id="navbar-main">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="/">Status</a>
+                </li>
+                <li class="active">
+                    <a href="/openStats">Öffnungsstatistiken</a>
+                </li>
+            </ul>
+            <ul id="inprintLink" class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="//www.kreativitaet-trifft-technik.de/impressum" class="navbar-link">Impressum</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid page-open-stats">
+
+    <section>
+        <h2>Graph!</h2>
+        Wann hatte der Mainframe wie lange auf? Ihr könnt bis zum 23. Februar
+        2012 zurück gucken!
+
+        <div id="chartdiv"></div>
+    </section>
+
+</div>
+
+<div class="container">
+    <section id="stats">
+        <h2>Letzte Woche</h2>
+
+        <p>Wie lange hatte der Mainframe im Durchschnitt auf? Heute nicht mitgezählt.</p>
+        <div class="weekly-stats">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label>Anzeigen für die letzte </label>
+                    <select class="form-control" id="weeklyStatsSelect">
+                        <option value="1" selected="selected" label="1 Wochen">1 Wochen</option>
+                        <option value="2" label="2 Wochen">2 Wochen</option>
+                        <option value="3" label="3 Wochen">3 Wochen</option>
+                        <option value="4" label="4 Wochen">4 Wochen</option>
+                        <option value="5" label="5 Wochen">5 Wochen</option>
+                        <option value="6" label="6 Wochen">6 Wochen</option>
+                    </select>
+                </div>
+            </form>
+
+
+            <table id="weeklyStatsTable" class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Wochentag</th>
+                    <th>Zeitdauer (h)</th>
+                </tr>
+                </thead>
+                <tbody id="weeklyStatsBody">
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+    <section>
+        <h2>Letzte Jahre</h2>
+
+        <p>Wie Lange hatten wir denn in den vergangen Jahren auf? </p>
+
+        <div class="yearly-stats">
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Jahr</th>
+                    <th>Stunden insgesamt</th>
+                    <th>Stunden pro Tag*</th>
+                </tr>
+                </thead>
+                <tbody id="yearlyStatsBody">
+                </tbody>
+            </table>
+
+            * Für das erste Jahr werden erst die Tage ab 23. Februar genommen und für das aktuelle Jahr nur die Tage bis
+            heute. Sonst sind das immer 365.
+
+        </div>
+
+
+    </section>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        Mainframe Spacestatus - <a href="//github.com/ktt-ol/spacestatus">github.com/ktt-ol/spacestatus</a>
+    </div>
+</footer>
+
+<script src="assets/js/amcharts.js"></script>
+<script src="assets/js/serial.js"></script>
+<script src="assets/js/openStats.js"></script>
+<script>openStatsInit();</script>
+</body>
+</html>

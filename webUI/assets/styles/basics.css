@@ -1,0 +1,96 @@
+body {
+    font-size: 16px;
+}
+
+section {
+    margin-bottom: 45px;
+}
+
+.navbar .brand {
+    margin-left: 25px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.navbar #inprintLink {
+    margin-right: 30px;
+}
+
+#mainframeLogo img,
+#fabolabLogo img {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+td:first-child {
+    width: 312px;
+}
+
+.person:after {
+    content: " • ";
+    font-size: 30px;
+    vertical-align: middle;
+    line-height: 20px;
+}
+
+.person:last-child:after {
+    content: "";
+}
+
+.location.Space {
+    color: #008000;
+}
+
+.location.Radstelle {
+    color: #9696fd;
+}
+
+.location.Fräse {
+    color: #fdca96;
+}
+
+.location:after {
+    content: ", ";
+}
+
+.location:last-child:after {
+    content: "";
+}
+
+@media (max-width: 600px) {
+    td:first-child {
+        width: 175px;
+    }
+}
+
+.sidebar {
+    text-align: center;
+}
+
+.status-legend {
+    font-size: 12px;
+}
+
+footer {
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    background-color: #fff;
+}
+
+.connection-error-warning, .startup-error-warning {
+    display: none;
+}
+
+body.connection-error .connection-error-warning, body.startup-error .startup-error-warning {
+    display: block;
+}
+
+body.connection-error .blank-on-disconnect, body.startup-error .blank-on-disconnect {
+    opacity: 0.3;
+}
+
+#chartdiv {
+    width: 100%;
+    height: 500px;
+}

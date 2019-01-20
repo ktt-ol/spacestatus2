@@ -1,0 +1,5 @@
+vendor/
+mysql_datadir/
+.idea/
+config.toml
+status2

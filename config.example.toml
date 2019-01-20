@@ -1,0 +1,48 @@
+# COPY THIS TO config.toml
+
+[misc]
+debugLogging = false
+#Logfile = "logs/foo.log"
+
+[mqtt]
+url = "tls://server:8883"
+# optional
+certFile = "server.cert.pem"
+username = "user"
+password = "pass"
+
+[mqtt.topics]
+spaceInternalBrokerTopic = "$SYS/broker/connection/spacegate.mainframe.lan/state"
+devices = "/net/devices"
+StateSpace = "/access-control-system/space-state"
+StateSpaceNext = "/access-control-system/space-state-next"
+StateRadstelle = "/access-control-system/radstelle-state"
+StateLab3d = "/access-control-system/3dlab-state"
+StateMachining = "/access-control-system/machining/state"
+EnergyFront = "/test/stromVorne/power"
+EnergyBack = "/test/stromHinten/power"
+
+[mysql]
+host ="localhost"
+user = "root"
+password ="your pw"
+database ="spaceschalter"
+SaveDevicesIntervalInSec = 900 # 15 * 60
+
+[twitter]
+# if true, it does everthing except the actual tweet. Useful for developing.
+Mocking = false
+Enabled = false
+# delay tweeting after space state change for this long; it's also the minimum time between two tweets
+TwitterdelayInSec = 180 # 3 * 60
+# auth
+ConsumerKey = "?"
+ConsumerSecret = "?"
+AccessTokenKey = "?"
+AccessTokenSecret = "?"
+
+[web]
+Host = "localhost"
+Port = 9000
+# to change the status on the /switch page. If empty, the /switch page is disabled.
+SwitchPassword = ""

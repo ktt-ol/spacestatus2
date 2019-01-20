@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Space Status</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="../assets/styles/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/styles/basics.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button"
+                    onclick="document.getElementById('navbar-main').classList.toggle('in')">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="//mainframe.io" class="navbar-brand">
+                <img src="../assets/images/top_logo.png" alt="Mainframe"/>
+            </a>
+        </div>
+        <div class="navbar-collapse collapse" ng-class="isCollapsed ? '' : 'in'" id="navbar-main">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="/">Status</a>
+                </li>
+                <li>
+                    <a href="/openStats">Öffnungsstatistiken</a>
+                </li>
+            </ul>
+            <ul id="inprintLink" class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="//www.kreativitaet-trifft-technik.de/impressum" class="navbar-link">Impressum</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container page-switch">
+
+    <h1>Switch</h1>
+
+    <form class="form-inline" action="" method="post">
+
+    {{if .showPwField}}
+        <div class="form-group">
+            <label for="pw">Password</label>
+            <div class="pw-input">
+                <input type="password" class="form-control" name="password" id="pw" placeholder="Password"
+                       value="{{ .password }}">
+                <button class="btn btn-default btn-link" onclick="pwToUrl(); return false">Als URL</button>
+            </div>
+        </div>
+    {{end}}
+
+        <h2>Space</h2>
+
+        <div>
+            <button type="submit" class="btn btn-success" name="action" value="open">Öffnen!</button>
+            <button type="submit" class="btn btn-danger" name="action" value="close">Schließen!</button>
+        </div>
+    </form>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        Mainframe Spacestatus - <a href="//github.com/ktt-ol/spacestatus">github.com/ktt-ol/spacestatus</a>
+    </div>
+</footer>
+
+<script>
+    function pwToUrl() {
+        location.search = "?password=" + document.getElementById("pw").value;
+    }
+</script>
+
+</body>
+</html>
