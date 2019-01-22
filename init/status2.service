@@ -3,9 +3,13 @@ Description=Space status v2
 
 [Service]
 Type=simple
+User=status2
+Group=status2
 Restart=on-failure
 RestartSec=30s
-ExecStart=/path/to/status2
+
+WorkingDirectory=/home/status2/app
+ExecStart=/home/status2/app/status2
 
 [Install]
 WantedBy=multi-user.target
