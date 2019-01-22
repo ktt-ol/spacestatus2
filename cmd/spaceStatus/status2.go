@@ -18,7 +18,7 @@ func main() {
 
 	conf.SetupLogging(config.Misc)
 
-	logrus.Info("-------------\nStarting status2...")
+	logrus.Info("------------- Starting status2... -------------")
 
 	st := state.NewDefaultState()
 	ev := events.NewEventManager()
