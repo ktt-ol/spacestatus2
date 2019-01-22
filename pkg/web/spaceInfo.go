@@ -16,7 +16,7 @@ func SpaceInfo(st *state.State, group *gin.RouterGroup) {
 		data := map[string]interface{}{
 			"api":   "0.13",
 			"space": "Mainframe",
-			"logo":  "http://status.mainframe.io/assets/static/logo.png",
+			"logo":  "http://status.mainframe.io/assets/images/mainframe.png",
 			"url":   "http://mainframe.io/",
 			"location": map[string]interface{}{
 				"address": "Bahnhofsplatz 10, 26122 Oldenburg, Germany",
