@@ -8,6 +8,7 @@ import (
 	"github.com/ktt-ol/status2/pkg/twitter"
 	"github.com/ktt-ol/status2/pkg/web"
 	"github.com/ktt-ol/status2/pkg/db"
+	"github.com/sirupsen/logrus"
 )
 
 const CONFIG_FILE = "config.toml"
@@ -16,6 +17,8 @@ func main() {
 	config := conf.LoadConfig(CONFIG_FILE)
 
 	conf.SetupLogging(config.Misc)
+
+	logrus.Info("-------------\nStarting status2...")
 
 	st := state.NewDefaultState()
 	ev := events.NewEventManager()
@@ -27,6 +30,5 @@ func main() {
 	twitter.NewTwitterHandler(config.Twitter, ev, st)
 	mqttMgr := mqtt.NewMqttManager(config.Mqtt, ev, st)
 
-	//fmt.Scanln()
 	web.StartWebService(config.Web, ev, st, dbMgr, mqttMgr)
 }
