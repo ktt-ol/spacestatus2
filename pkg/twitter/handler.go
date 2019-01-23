@@ -106,7 +106,11 @@ func (t *TwitterHandler) updateStateAndTweetDebounced(topic events.EventName, op
 		}
 		ts := time.Unix(openValueTs.Timestamp, 0)
 		msg := fmt.Sprintf(template, getPlaceName(topic), ts.Format("15:04"))
-		t.api.Send(msg)
+		logger.WithField("msg", msg).Debug("Sending tweet.")
+		err := t.api.Send(msg)
+		if err != nil {
+			logger.WithError(err).Error("Error sending tweet")
+		}
 	}
 
 	if t.config.TwitterdelayInSec == 0 {

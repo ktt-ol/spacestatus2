@@ -16,20 +16,9 @@ type twitterImpl struct {
 }
 
 func (t *twitterImpl) Send(msg string) error {
+
 	_, _, err := t.client.Statuses.Update(msg, nil)
 	return err
-}
-
-type MockImpl struct {
-	lastMsg string
-	tweetCount int
-}
-
-func (t *MockImpl) Send(msg string) error {
-	t.lastMsg = msg
-	t.tweetCount++
-	logrus.WithField("where", "twitterMockImpl").Info("MOCK: ", msg)
-	return nil
 }
 
 func NewTwitterImpl(c conf.TwitterConf) TwitterApi {
@@ -38,6 +27,18 @@ func NewTwitterImpl(c conf.TwitterConf) TwitterApi {
 	httpClient := config.Client(oauth1.NoContext, token)
 
 	return &twitterImpl{twitter.NewClient(httpClient)}
+}
+
+type MockImpl struct {
+	lastMsg    string
+	tweetCount int
+}
+
+func (t *MockImpl) Send(msg string) error {
+	t.lastMsg = msg
+	t.tweetCount++
+	logrus.WithField("where", "twitterMockImpl").Info("MOCK: ", msg)
+	return nil
 }
 
 func NewMockingImpl() TwitterApi {
