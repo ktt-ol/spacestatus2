@@ -31,7 +31,7 @@ func (ops *OpenStatePersistence) onChange(topic events.EventName) {
 	lastState := ops.lastOpenStates[place]
 
 	if currentState.Value == lastState.Value {
-		logger.Info("The current state is the same in the db. Skipping the INSERT.")
+		logger.Debug("The current state is the same in the db. Skipping the INSERT.")
 		return
 	}
 
