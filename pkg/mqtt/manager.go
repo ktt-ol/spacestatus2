@@ -145,17 +145,20 @@ func (h *MqttManager) subscribe(topic string, cb mqtt.MessageHandler) {
 func (h *MqttManager) subscribeToOpenState(topic string, eventName events.EventName, openState *state.OpenValueTs) {
 
 	h.subscribe(topic, func(client mqtt.Client, message mqtt.Message) {
+		topicLogger := mqttLogger.WithField("topic", topic)
+
 		strMessage := string(message.Payload())
+		if strMessage == "" {
+			topicLogger.Debug("Empty message.")
+			return
+		}
 		openValue, err := state.ParseOpenValue(strMessage)
 		if err != nil {
-			mqttLogger.WithError(err).WithField("topic", topic).Warn("Got invalid open value from mqtt")
+			topicLogger.WithError(err).Warn("Got invalid open value from mqtt")
 			return
 		}
 
-		mqttLogger.WithFields(logrus.Fields{
-			"topic": topic,
-			"state": openValue,
-		}).Info("new open state")
+		topicLogger.WithField("state", openValue).Info("new open state")
 
 		openState.Value = openValue
 		openState.Timestamp = time.Now().Unix()
@@ -188,13 +191,19 @@ func (h *MqttManager) subscribeToPower(topic string, eventName events.EventName,
 }
 
 func (h *MqttManager) onSpaceOpenChange(client mqtt.Client, message mqtt.Message) {
+	topicLogger := mqttLogger.WithField("topic", message.Topic())
+
 	strMessage := string(message.Payload())
-	openValue, err := state.ParseOpenValue(strMessage)
-	if err != nil {
-		mqttLogger.WithError(err).WithField("topic", message.Topic()).Warn("Got invalid open value from mqtt")
+	if strMessage == "" {
+		topicLogger.Debug("Empty message.")
 		return
 	}
-	mqttLogger.WithField("openValue", openValue).WithField("topic", message.Topic()).Info("onSpaceOpenChange")
+	openValue, err := state.ParseOpenValue(strMessage)
+	if err != nil {
+		topicLogger.WithError(err).Warn("Got invalid open value from mqtt")
+		return
+	}
+	topicLogger.WithField("openValue", openValue).Info("onSpaceOpenChange")
 
 	if message.Topic() == h.config.Topics.StateSpace {
 		h.lastOpenState = &state.OpenValueTs{Value: openValue, Timestamp: time.Now().Unix()}
