@@ -123,6 +123,7 @@ func Test_debounce(t *testing.T) {
 }
 
 func Test_skipFirstStatus(t *testing.T) {
+	// test that the first status won't be tweeted
 	appState, twitt, mockImpl := setupObjects(t, 0)
 
 	appState.Open.Space.Value = state.OPEN
@@ -136,4 +137,26 @@ func Test_skipFirstStatus(t *testing.T) {
 	appState.Open.Machining.Value = state.OPEN
 	twitt.onOpenStateChange(events.TOPIC_MACHINING_OPEN_STATE)
 	require.Equal(t, 0, mockImpl.tweetCount)
+
+
+	// but: if we have a status change within the first twitter delay time, that change must be tweeted
+	appState, twitt, mockImpl = setupObjects(t, 1)
+
+	// app starts and get directly the first (retained) status (OPEN)
+	appState.Open.Space.Value = state.OPEN
+	twitt.onOpenStateChange(events.TOPIC_SPACE_OPEN_STATE)
+	// should not be tweeted (because of the first change AND the delay)
+	time.Sleep(time.Duration(100 * time.Millisecond))
+	require.Equal(t, 0, mockImpl.tweetCount)
+	time.Sleep(time.Duration(100 * time.Millisecond))
+	// some closes the space for the public
+	appState.Open.Space.Value = state.MEMBER
+	twitt.onOpenStateChange(events.TOPIC_SPACE_OPEN_STATE)
+	time.Sleep(time.Duration(100 * time.Millisecond))
+	// no change, because of the delay
+	require.Equal(t, 0, mockImpl.tweetCount)
+	time.Sleep(time.Duration(1000 * time.Millisecond))
+	// tweet delay is finished
+	require.Equal(t, 1, mockImpl.tweetCount)
 }
+

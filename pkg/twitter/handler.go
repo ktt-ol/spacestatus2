@@ -84,8 +84,7 @@ func (t *TwitterHandler) updateStateAndTweetDebounced(topic events.EventName, op
 		// update last state
 		t.lastStateSend[topic] = *openValueTs
 		if !ok {
-			logger.WithField("topic", topic).Debug("No last open state found for topic.")
-			// we assume the server just started and this is the first (retained) state -> no tweet
+			logger.WithField("topic", topic).Warn("No last open state found for topic.")
 			return
 		} else {
 			// any changes for the public?
@@ -97,7 +96,6 @@ func (t *TwitterHandler) updateStateAndTweetDebounced(topic events.EventName, op
 				return
 			}
 		}
-
 
 
 		template := TWEET_TEMPLATE_CLOSED
@@ -112,6 +110,14 @@ func (t *TwitterHandler) updateStateAndTweetDebounced(topic events.EventName, op
 			logger.WithError(err).Error("Error sending tweet")
 		}
 	}
+
+	_, ok := t.lastStateSend[topic]
+	if !ok {
+		// app start case, setting the first state and stop here
+		t.lastStateSend[topic] = *openValueTs
+		return;
+	}
+
 
 	if t.config.TwitterdelayInSec == 0 {
 		// there is no delay configured, send immediately
