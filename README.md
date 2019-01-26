@@ -13,7 +13,7 @@ Shows the space status, stores the data in a mysql database for statistics and s
 ```bash
 # build binary
 dep ensure
-go build cmd/spaceStatus/status2.go
+./build.sh
 
 # create config
 cp config.example.toml config.toml

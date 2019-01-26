@@ -13,12 +13,18 @@ import (
 
 const CONFIG_FILE = "config.toml"
 
+var buildVersion = "unkown"
+
 func main() {
 	config := conf.LoadConfig(CONFIG_FILE)
 
 	conf.SetupLogging(config.Misc)
 
-	logrus.Info("------------- Starting status2... -------------")
+	logrus.Info("\n" +
+		"-------------\n" +
+		"Starting status2\n" +
+		"Version: " + buildVersion + "\n" +
+		"-------------")
 
 	st := state.NewDefaultState()
 	ev := events.NewEventManager()
