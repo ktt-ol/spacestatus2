@@ -17,6 +17,9 @@ type ssEvent struct {
 func StatusStream(ev events.EventManager, appState *state.State, group *gin.RouterGroup) {
 	group.GET("", func(c *gin.Context) {
 
+		// the default gin logger logs only at the request END, but this request is a stream
+		logger.Debug("Starting statusStream: ", c.ClientIP(), " | ", c.Request.URL.RawQuery)
+
 		// a small buffer to avoid getting the warning too early
 		msgChannel := make(chan ssEvent, 5)
 
@@ -113,4 +116,3 @@ func StatusStream(ev events.EventManager, appState *state.State, group *gin.Rout
 		})
 	})
 }
-
