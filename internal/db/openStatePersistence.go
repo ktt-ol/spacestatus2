@@ -1,8 +1,8 @@
 package db
 
 import (
-	"github.com/ktt-ol/status2/pkg/events"
-	"github.com/ktt-ol/status2/pkg/state"
+	"github.com/ktt-ol/status2/internal/events"
+	"github.com/ktt-ol/status2/internal/state"
 )
 
 type OpenStatePersistence struct {

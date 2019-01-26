@@ -1,8 +1,8 @@
 package db
 
 import (
-	"github.com/ktt-ol/status2/pkg/state"
-	"github.com/ktt-ol/status2/pkg/conf"
+	"github.com/ktt-ol/status2/internal/state"
+	"github.com/ktt-ol/status2/internal/conf"
 	"time"
 )
 

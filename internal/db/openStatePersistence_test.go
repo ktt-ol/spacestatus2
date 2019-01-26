@@ -2,8 +2,8 @@ package db
 
 import (
 	"testing"
-	"github.com/ktt-ol/status2/pkg/state"
-	"github.com/ktt-ol/status2/pkg/events"
+	"github.com/ktt-ol/status2/internal/state"
+	"github.com/ktt-ol/status2/internal/events"
 	"github.com/stretchr/testify/require"
 )
 

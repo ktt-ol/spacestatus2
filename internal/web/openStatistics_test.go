@@ -2,11 +2,11 @@ package web
 
 import (
 	"testing"
-	"github.com/ktt-ol/status2/pkg/db"
-	"github.com/ktt-ol/status2/pkg/state"
+	"github.com/ktt-ol/status2/internal/db"
+	"github.com/ktt-ol/status2/internal/state"
 	"time"
 	"github.com/stretchr/testify/require"
-	"github.com/ktt-ol/status2/pkg/conf"
+	"github.com/ktt-ol/status2/internal/conf"
 	"fmt"
 )
 

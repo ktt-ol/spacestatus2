@@ -1,6 +1,6 @@
 package test
 
-import "github.com/ktt-ol/status2/pkg/events"
+import "github.com/ktt-ol/status2/internal/events"
 
 type EventManagerMock struct {
 	OnCount     int

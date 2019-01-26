@@ -1,13 +1,13 @@
 package db
 
 import (
-	"github.com/ktt-ol/status2/pkg/conf"
+	"github.com/ktt-ol/status2/internal/conf"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"time"
-	"github.com/ktt-ol/status2/pkg/state"
+	"github.com/ktt-ol/status2/internal/state"
 )
 
 var logger = logrus.WithField("where", "db")

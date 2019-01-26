@@ -2,14 +2,14 @@ package web
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/ktt-ol/status2/pkg/conf"
-	"github.com/ktt-ol/status2/pkg/events"
-	"github.com/ktt-ol/status2/pkg/state"
+	"github.com/ktt-ol/status2/internal/conf"
+	"github.com/ktt-ol/status2/internal/events"
+	"github.com/ktt-ol/status2/internal/state"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/ktt-ol/status2/pkg/db"
+	"github.com/ktt-ol/status2/internal/db"
 	"os"
-	"github.com/ktt-ol/status2/pkg/mqtt"
+	"github.com/ktt-ol/status2/internal/mqtt"
 	"github.com/gin-contrib/cors"
 )
 

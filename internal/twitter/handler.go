@@ -2,9 +2,9 @@ package twitter
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/ktt-ol/status2/pkg/conf"
-	"github.com/ktt-ol/status2/pkg/events"
-	"github.com/ktt-ol/status2/pkg/state"
+	"github.com/ktt-ol/status2/internal/conf"
+	"github.com/ktt-ol/status2/internal/events"
+	"github.com/ktt-ol/status2/internal/state"
 	"github.com/bep/debounce"
 	"time"
 	"fmt"

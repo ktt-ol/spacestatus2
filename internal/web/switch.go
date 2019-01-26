@@ -2,10 +2,10 @@ package web
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/ktt-ol/status2/pkg/mqtt"
+	"github.com/ktt-ol/status2/internal/mqtt"
 	"net/http"
-	"github.com/ktt-ol/status2/pkg/conf"
-	"github.com/ktt-ol/status2/pkg/state"
+	"github.com/ktt-ol/status2/internal/conf"
+	"github.com/ktt-ol/status2/internal/state"
 )
 
 func SwitchPage(conf conf.WebServiceConf, mqttMgr *mqtt.MqttManager, group *gin.RouterGroup) {

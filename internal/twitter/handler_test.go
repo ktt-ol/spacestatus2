@@ -2,11 +2,11 @@ package twitter
 
 import (
 	"testing"
-	"github.com/ktt-ol/status2/pkg/test"
-	"github.com/ktt-ol/status2/pkg/state"
-	"github.com/ktt-ol/status2/pkg/conf"
+	"github.com/ktt-ol/status2/internal/test"
+	"github.com/ktt-ol/status2/internal/state"
+	"github.com/ktt-ol/status2/internal/conf"
 	"github.com/stretchr/testify/require"
-	"github.com/ktt-ol/status2/pkg/events"
+	"github.com/ktt-ol/status2/internal/events"
 	"time"
 )
 

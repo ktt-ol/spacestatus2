@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/ktt-ol/status2/pkg/events"
+	"github.com/ktt-ol/status2/internal/events"
 	"errors"
 )
 

@@ -1,7 +1,7 @@
 package web
 
 import (
-	"github.com/ktt-ol/status2/pkg/state"
+	"github.com/ktt-ol/status2/internal/state"
 	"github.com/gin-gonic/gin"
 )
 

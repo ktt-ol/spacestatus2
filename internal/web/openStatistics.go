@@ -2,7 +2,7 @@ package web
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/ktt-ol/status2/pkg/db"
+	"github.com/ktt-ol/status2/internal/db"
 	"time"
 	"github.com/sirupsen/logrus"
 	"fmt"

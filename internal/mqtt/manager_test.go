@@ -3,9 +3,9 @@ package mqtt
 import (
 	"testing"
 	"github.com/stretchr/testify/require"
-	"github.com/ktt-ol/status2/pkg/events"
-	"github.com/ktt-ol/status2/pkg/state"
-	"github.com/ktt-ol/status2/pkg/test"
+	"github.com/ktt-ol/status2/internal/events"
+	"github.com/ktt-ol/status2/internal/state"
+	"github.com/ktt-ol/status2/internal/test"
 )
 
 func Test_newSpaceState(t *testing.T) {

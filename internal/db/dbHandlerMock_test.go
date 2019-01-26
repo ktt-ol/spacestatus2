@@ -1,6 +1,6 @@
 package db
 
-import "github.com/ktt-ol/status2/pkg/state"
+import "github.com/ktt-ol/status2/internal/state"
 
 type DbManagerMock struct {
 	LastOpenStatesValues []LastOpenStates
