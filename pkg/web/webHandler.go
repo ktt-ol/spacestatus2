@@ -24,8 +24,8 @@ func StartWebService(conf conf.WebServiceConf, ev events.EventManager, appState 
 	gin.DisableConsoleColor()
 	gin.DefaultWriter = logrus.WithField("where", "gin").WriterLevel(logrus.DebugLevel)
 	gin.DefaultErrorWriter = logrus.WithField("where", "gin").WriterLevel(logrus.ErrorLevel)
-
-	router := gin.Default()
+	router := gin.New()
+	router.Use(SimpleNoTimeLogging(), gin.Recovery())
 
 	legacyApiCall(router)
 
