@@ -10,6 +10,7 @@ import (
 	"github.com/ktt-ol/status2/pkg/db"
 	"os"
 	"github.com/ktt-ol/status2/pkg/mqtt"
+	"github.com/gin-contrib/cors"
 )
 
 var logger = logrus.WithField("where", "web")
@@ -26,6 +27,8 @@ func StartWebService(conf conf.WebServiceConf, ev events.EventManager, appState 
 	gin.DefaultErrorWriter = logrus.WithField("where", "gin").WriterLevel(logrus.ErrorLevel)
 	router := gin.New()
 	router.Use(SimpleNoTimeLogging(), gin.Recovery())
+
+	router.Use(cors.Default())
 
 	legacyApiCall(router)
 
