@@ -85,31 +85,25 @@ func StatusStream(ev events.EventManager, appState *state.State, group *gin.Rout
 			return false
 		})
 
-		ticker := time.NewTicker(time.Minute * 10)
-		defer ticker.Stop()
+		sendKeepAliveTicker := time.NewTicker(time.Minute * 10)
+		// this seems to be needed, to avoid panics. If not used, the stream could be stuck in the sendKeepAliveTimer around 10 minutes
+		// and this might lead to panics.
+		connectionTicker := time.NewTicker(time.Second)
 
-		go func() {
-			for {
-				<-ticker.C
-				eventData := ssEvent{
-					name: "keepalive",
-					data: "",
-				}
-				select {
-				case msgChannel <- eventData:
-					// everything ok
-				default:
-					logger.Debug("Stopping keep alive.")
-					ticker.Stop()
-				}
-			}
+		defer func() {
+			close(msgChannel)
+			sendKeepAliveTicker.Stop()
+			connectionTicker.Stop()
 		}()
 
-		defer close(msgChannel)
-
 		c.Stream(func(w io.Writer) bool {
-			event := <-msgChannel
-			c.SSEvent(event.name, event.data)
+			select {
+			case event := <-msgChannel:
+				c.SSEvent(event.name, event.data)
+			case <-sendKeepAliveTicker.C:
+				c.SSEvent("keepalive", "")
+			case <-connectionTicker.C:
+			}
 
 			// stream, until the client disconnects
 			return true
