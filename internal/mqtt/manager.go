@@ -148,10 +148,6 @@ func (h *MqttManager) subscribeToOpenState(topic string, eventName events.EventN
 		topicLogger := mqttLogger.WithField("topic", topic)
 
 		strMessage := string(message.Payload())
-		if strMessage == "" {
-			topicLogger.Debug("Empty message.")
-			return
-		}
 		openValue, err := state.ParseOpenValue(strMessage)
 		if err != nil {
 			topicLogger.WithError(err).Warn("Got invalid open value from mqtt")
@@ -194,10 +190,6 @@ func (h *MqttManager) onSpaceOpenChange(client mqtt.Client, message mqtt.Message
 	topicLogger := mqttLogger.WithField("topic", message.Topic())
 
 	strMessage := string(message.Payload())
-	if strMessage == "" {
-		topicLogger.Debug("Empty message.")
-		return
-	}
 	openValue, err := state.ParseOpenValue(strMessage)
 	if err != nil {
 		topicLogger.WithError(err).Warn("Got invalid open value from mqtt")

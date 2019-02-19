@@ -36,6 +36,9 @@ func ParseOpenValue(value string) (OpenValue, error) {
 
 	// legacy state values
 	switch value {
+	// some clients send this for NONE
+	case "":
+		fallthrough
 	case "closed":
 		fallthrough
 	case "off":

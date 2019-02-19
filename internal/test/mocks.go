@@ -28,3 +28,7 @@ func (*MessageMock) MessageID() uint16 {
 func (m *MessageMock) Payload() []byte {
 	return m.PayloadData
 }
+
+func (m *MessageMock) Ack() {
+	panic("implement me")
+}

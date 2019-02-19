@@ -6,11 +6,11 @@ import (
 )
 
 func Test_ParseOpenValue(t *testing.T) {
-	isParseError(t, "")
 	isParseError(t, "moin")
 	isParseError(t, "openx")
 
 	// normal values
+	isOpenValue(t, "", NONE)
 	isOpenValue(t, "none", NONE)
 	isOpenValue(t, "open", OPEN)
 
