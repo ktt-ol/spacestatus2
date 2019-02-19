@@ -31,6 +31,8 @@ func ParseOpenValue(value string) (OpenValue, error) {
 	case OPEN:
 		fallthrough
 	case OPEN_PLUS:
+		fallthrough
+	case CLOSING:
 		return ov, nil
 	}
 
