@@ -6,8 +6,6 @@ import (
 	"github.com/ktt-ol/status2/internal/state"
 	"time"
 	"github.com/stretchr/testify/require"
-	"github.com/ktt-ol/status2/internal/conf"
-	"fmt"
 )
 
 func Test_normalizeResults(t *testing.T) {
@@ -34,57 +32,6 @@ func Test_normalizeResults(t *testing.T) {
 	require.Equal(t, end, result[0].end)
 	require.Equal(t, start2, result[1].begin)
 	require.Nil(t, result[1].end)
-}
-
-func Test_y(t *testing.T) {
-	note := &tmp{nextYearCarry: make([][2]int64, 0)}
-	note.currentYearTs = 1900
-	note.nextYearCarry = append(note.nextYearCarry, [2]int64{1, 1})
-	//fmt.Println(note.currentYearTs, len(note.nextYearCarry), note.nextYearCarry[0][0])
-
-	note.entriesForCurrentYear = make([][][2]int64, 10, 10)
-	note.entriesForCurrentYear[0] = append(note.entriesForCurrentYear[0], [2]int64{3, 3})
-
-	fmt.Println(len(note.entriesForCurrentYear[0]))
-	foo(note)
-
-	fmt.Println(len(note.entriesForCurrentYear[0]))
-	//fmt.Println(note.currentYearTs, len(note.nextYearCarry), note.nextYearCarry[0][0])
-}
-
-func foo(note *tmp) {
-	note.currentYearTs = 2018
-	note.nextYearCarry = append(note.nextYearCarry, [2]int64{2, 2})
-	note.entriesForCurrentYear[0] = append(note.entriesForCurrentYear[0], [2]int64{4, 4})
-}
-
-func Test_x(t *testing.T) {
-	config := conf.LoadConfig("../../config.toml")
-	dbMgr := db.NewManager(config.MySql)
-	openStates := dbMgr.GetAllSpaceOpenStates()
-	fmt.Println(len(openStates))
-
-	name, offset := openStates[0].Time.Zone()
-	fmt.Println("openStates", name, offset)
-
-	for i := range openStates {
-		fmt.Printf("%d - %s - %s\n", i, openStates[i].Time, openStates[i].Value)
-	}
-
-	normed := normalizeResults(openStates)
-	name, offset = normed[0].begin.Zone()
-	fmt.Println("normed[0].begin", name, offset)
-	name, offset = normed[0].end.Zone()
-	fmt.Println("normed[0].end", name, offset)
-	for i := range normed {
-		fmt.Println(normed[i])
-	}
-
-	//yearSlots := buildSlots(normed)
-	//fmt.Println(yearSlots)
-
-	name, offset = mkTestTime(2018, 10, 31, 19, 07).Zone()
-	fmt.Println("mkTestTime", name, offset)
 }
 
 func Test_buildSlots(t *testing.T) {

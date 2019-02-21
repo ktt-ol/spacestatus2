@@ -8,9 +8,9 @@ import (
 func Test_ParseOpenValue(t *testing.T) {
 	isParseError(t, "moin")
 	isParseError(t, "openx")
+	isParseError(t, "")
 
 	// normal values
-	isOpenValue(t, "", NONE)
 	isOpenValue(t, "none", NONE)
 	isOpenValue(t, "open", OPEN)
 
@@ -18,8 +18,8 @@ func Test_ParseOpenValue(t *testing.T) {
 	isOpenValue(t, "closed", NONE)
 	isOpenValue(t, "opened", OPEN)
 
-	// special state is not parsable
-	isParseError(t, "closing")
+	// special state comes from the db
+	isOpenValue(t, "closing", CLOSING)
 }
 
 func isParseError(t *testing.T, valueToTest string) {

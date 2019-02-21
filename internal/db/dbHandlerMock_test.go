@@ -22,6 +22,10 @@ func (dbm *DbManagerMock) GetLastDevicesData() *LastDevices {
 	panic("implement me")
 }
 
+func (dbm *DbManagerMock) GetAllSpaceOpenStates() []OpenState {
+	panic("implement me")
+}
+
 func (dbm *DbManagerMock) UpdateOpenState(place Place, openValue state.OpenValueTs) {
 	dbm.UpdateOpenStateCount++
 	dbm.LastPlace = place

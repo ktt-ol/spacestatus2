@@ -6,7 +6,7 @@ import (
 )
 
 func Test_Config(t *testing.T) {
-	config := LoadConfig("../config.example.toml")
+	config := LoadConfig("../../config.example.toml")
 
 	// test some values
 
