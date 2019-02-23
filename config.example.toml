@@ -21,6 +21,9 @@ StateLab3d = "/access-control-system/3dlab-state"
 StateMachining = "/access-control-system/machining/state"
 EnergyFront = "/test/stromVorne/power"
 EnergyBack = "/test/stromHinten/power"
+KeyholderId = "/access-control-system/keyholder/id"
+KeyholderName = "/access-control-system/keyholder/name"
+
 
 [mysql]
 host ="localhost"

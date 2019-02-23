@@ -43,6 +43,8 @@ type MqttTopicsConf struct {
 	StateMachining           string
 	EnergyFront              string
 	EnergyBack               string
+	KeyholderId              string
+	KeyholderName            string
 }
 
 type MySqlConf struct {

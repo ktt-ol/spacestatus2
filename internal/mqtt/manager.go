@@ -84,11 +84,25 @@ func NewMqttManager(conf conf.MqttConf, events events.EventManager, appState *st
 func (h *MqttManager) SendNewSpaceStatus(status state.OpenValue) {
 	stLogger := mqttLogger.WithField("newStatus", status)
 	stLogger.Info("Sending new space status mqtt value.")
-	token := h.client.Publish(h.config.Topics.StateSpace, 0, false, string(status))
-	token.WaitTimeout(5 * time.Second)
 
-	if token.Error() != nil {
-		stLogger.WithError(token.Error()).Error("Could not send new status.")
+	h.publish(h.config.Topics.StateSpace, string(status))
+	// reset the keyholder, because we don't this anymore 
+	h.publish(h.config.Topics.KeyholderName, "")
+	h.publish(h.config.Topics.KeyholderId, "")
+}
+
+func (h *MqttManager) publish(topic string, value string) bool {
+	token := h.client.Publish(topic, 0, true, value)
+	if token.WaitTimeout(5 * time.Second) {
+		// no timeout, but there might be an error
+		if token.Error() == nil {
+			return true
+		}
+		mqttLogger.WithField("topic", topic).WithField("value", value).WithError(token.Error()).Error("Can't publish.")
+		return false
+	} else {
+		mqttLogger.WithField("topic", topic).WithField("value", value).Error("Got mqtt timeout.")
+		return false
 	}
 }
 
@@ -116,7 +130,6 @@ func (h *MqttManager) onConnect(client mqtt.Client) {
 
 	h.subscribeToPower(h.config.Topics.EnergyFront, events.TOPIC_POWER_USAGE, h.state.PowerUsage.Front)
 	h.subscribeToPower(h.config.Topics.EnergyBack, events.TOPIC_POWER_USAGE, h.state.PowerUsage.Back)
-
 
 	//token := h.client.Publish("/access-control-system/footest", 0, false, "barbar")
 	//token.WaitTimeout(5 * time.Second)
