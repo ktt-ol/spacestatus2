@@ -49,6 +49,10 @@ td:first-child {
     color: #fdca96;
 }
 
+.location.Holz {
+    color: #761c19;
+}
+
 .location:after {
     content: ", ";
 }
