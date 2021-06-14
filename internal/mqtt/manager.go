@@ -189,9 +189,11 @@ func (h *MqttManager) subscribeToPower(topic string, eventName events.EventName,
 
 		energy, err := strconv.ParseFloat(strMessage, 64);
 		if err != nil {
-			mqttLogger.WithError(err).WithField("topic", topic).Warn("Invalid float value for energy front: ", strMessage)
+			mqttLogger.WithError(err).WithField("topic", topic).Warn("Invalid float value for power: ", strMessage)
 			return
 		}
+
+		energy /= 1000;
 
 		//mqttLogger.WithFields(logrus.Fields{
 		//	"topic": topic,
