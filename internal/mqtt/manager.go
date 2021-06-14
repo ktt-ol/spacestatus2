@@ -130,6 +130,7 @@ func (h *MqttManager) onConnect(client mqtt.Client) {
 
 	h.subscribeToPower(h.config.Topics.EnergyFront, events.TOPIC_POWER_USAGE, h.state.PowerUsage.Front)
 	h.subscribeToPower(h.config.Topics.EnergyBack, events.TOPIC_POWER_USAGE, h.state.PowerUsage.Back)
+	h.subscribeToPower(h.config.Topics.EnergyMachining, events.TOPIC_POWER_USAGE, h.state.PowerUsage.Machining)
 
 	//token := h.client.Publish("/access-control-system/footest", 0, false, "barbar")
 	//token.WaitTimeout(5 * time.Second)

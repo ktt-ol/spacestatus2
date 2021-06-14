@@ -51,6 +51,7 @@ type PowerValueTs struct {
 type PowerUsageState struct {
 	Front *PowerValueTs `json:"front"`
 	Back  *PowerValueTs `json:"back"`
+	Machining  *PowerValueTs `json:"machining"`
 }
 
 type FreifunkState struct {
@@ -90,6 +91,7 @@ func NewDefaultState() *State {
 		PowerUsage: &PowerUsageState{
 			Front: &PowerValueTs{Value: 0.0, Timestamp: 0},
 			Back:  &PowerValueTs{Value: 0.0, Timestamp: 0},
+			Machining:  &PowerValueTs{Value: 0.0, Timestamp: 0},
 		},
 		Freifunk: &FreifunkState{
 			ClientCount: 0,

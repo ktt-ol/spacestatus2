@@ -12,6 +12,7 @@ var timestamps = {
     // weather: 0,
     energyFront: 0,
     energyBack: 0
+    energyMachining: 0
 };
 
 function statusInit() {
@@ -81,8 +82,10 @@ function initEventSource() {
 
         timestamps.energyFront = data.front.timestamp;
         timestamps.energyBack = data.back.timestamp;
+        timestamps.energyMachining = data.machining.timestamp;
         setText('energyFront', data.front.value);
         setText('energyBack', data.back.value)
+        setText('energyMachining', data.machining.value)
     });
 
 
