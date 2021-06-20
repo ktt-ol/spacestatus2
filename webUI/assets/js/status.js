@@ -11,7 +11,7 @@ var timestamps = {
     // freifunk: 0,
     // weather: 0,
     energyFront: 0,
-    energyBack: 0
+    energyBack: 0,
     energyMachining: 0
 };
 
