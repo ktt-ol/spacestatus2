@@ -43,6 +43,7 @@ type MqttTopicsConf struct {
 	StateMachining           string
 	EnergyFront              string
 	EnergyBack               string
+	EnergyMachining			 string
 	KeyholderId              string
 	KeyholderName            string
 }

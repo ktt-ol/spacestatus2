@@ -69,6 +69,14 @@ func SpaceInfo(st *state.State, group *gin.RouterGroup) {
 					"value":       st.PowerUsage.Back.Value,
 					"description": fmt.Sprintf("Value changed %d sec. ago.", nowInSeconds-st.PowerUsage.Back.Timestamp),
 				},
+				map[string]interface{}{
+					"name":        "current consumption machining",
+					"location":    "Hackspace, machining",
+					"unit":        "W",
+					"value":       st.PowerUsage.Machining.Value,
+					"description": fmt.Sprintf("Value changed %d sec. ago.", nowInSeconds-st.PowerUsage.Machining.Timestamp),
+				},
+
 			},
 			"feeds": map[string]interface{}{
 				"calendar": map[string]interface{}{

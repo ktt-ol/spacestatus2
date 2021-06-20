@@ -130,6 +130,7 @@ func (h *MqttManager) onConnect(client mqtt.Client) {
 
 	h.subscribeToPower(h.config.Topics.EnergyFront, events.TOPIC_POWER_USAGE, h.state.PowerUsage.Front)
 	h.subscribeToPower(h.config.Topics.EnergyBack, events.TOPIC_POWER_USAGE, h.state.PowerUsage.Back)
+	h.subscribeToPower(h.config.Topics.EnergyMachining, events.TOPIC_POWER_USAGE, h.state.PowerUsage.Machining)
 
 	//token := h.client.Publish("/access-control-system/footest", 0, false, "barbar")
 	//token.WaitTimeout(5 * time.Second)
@@ -188,9 +189,11 @@ func (h *MqttManager) subscribeToPower(topic string, eventName events.EventName,
 
 		energy, err := strconv.ParseFloat(strMessage, 64);
 		if err != nil {
-			mqttLogger.WithError(err).WithField("topic", topic).Warn("Invalid float value for energy front: ", strMessage)
+			mqttLogger.WithError(err).WithField("topic", topic).Warn("Invalid float value for power: ", strMessage)
 			return
 		}
+
+		energy /= 1000;
 
 		//mqttLogger.WithFields(logrus.Fields{
 		//	"topic": topic,
