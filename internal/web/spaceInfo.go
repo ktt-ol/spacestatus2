@@ -24,10 +24,9 @@ func SpaceInfo(st *state.State, group *gin.RouterGroup) {
 				"lon":     8.21988,
 			},
 			"contact": map[string]interface{}{
-				"irc":        "irc://freenode/#hsol",
 				"twitter":    "@HackspaceOL",
 				"email":      "vorstand@kreativitaet-trifft-technik.de",
-				"ml":         "diskussion@kreativitaet-trifft-technik.de",
+				"ml":         "https://mailman.ktt-ol.de/postorius/lists/diskussion.lists.ktt-ol.de/",
 				"issue_mail": "hc@kreativitaet-trifft-technik.de",
 			},
 			"issue_report_channels": [...]string{"issue_mail"},
