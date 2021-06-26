@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 GIT_VERSION=$(git describe --always --abbrev=8  --dirty --broken)
 

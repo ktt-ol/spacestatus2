@@ -4,13 +4,15 @@ Shows the space status, stores the data in a mysql database for statistics and s
 
 ## Requirements 
 
+To build local:
 * Go
 * dep
 
+Or only Docker.
+
 ## Install
 
-
-```bash
+```shell script
 # build binary
 dep ensure
 ./build.sh
@@ -18,6 +20,15 @@ dep ensure
 # create config
 cp config.example.toml config.toml
 vim config.toml 
+```
+
+## Build with Docker
+
+This script creates a docker image with proper Go build environment and uses this to build the binary. All dependencies 
+and cache files are stored in the `.docker-build` folder.
+
+```shell script
+./buildWithDocker.sh
 ```
 
 ## Run
