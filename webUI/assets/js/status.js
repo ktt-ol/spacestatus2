@@ -130,11 +130,11 @@ function addOpenListener(source, topic) {
                 style = 'success';
                 break;
             case 'keyholder':
-                status = 'AUF (Keyholder only!)';
+                status = 'ZU (Keyholder only!)';
                 style = 'danger';
                 break;
             case 'member':
-                status = 'AUF (Member only!)';
+                status = 'ZU (Member only!)';
                 style = 'danger';
                 break;
             case 'closing':
