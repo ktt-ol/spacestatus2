@@ -58,6 +58,10 @@ func StatusStream(ev events.EventManager, appState *state.State, group *gin.Rout
 				return appState.Mqtt
 			})
 
+			sendAndRegister(events.TOPIC_KEYHOLDER, func() interface{} {
+				return appState.Open.Keyholder
+			})
+
 			sendAndRegister(events.TOPIC_SPACE_OPEN_STATE, func() interface{} {
 				return appState.Open.Space
 			})

@@ -19,6 +19,6 @@ const (
 	TOPIC_FREIFUNK      EventName = "freifunk"
 	TOPIC_WEATHER       EventName = "weather"
 
-	TOPIC_MQTT EventName = "mqtt"
+	TOPIC_MQTT      EventName = "mqtt"
+	TOPIC_KEYHOLDER EventName = "keyholder"
 )
-

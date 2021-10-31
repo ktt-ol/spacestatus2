@@ -132,6 +132,8 @@ func (h *MqttManager) onConnect(client mqtt.Client) {
 	h.subscribeToPower(h.config.Topics.EnergyBack, events.TOPIC_POWER_USAGE, h.state.PowerUsage.Back)
 	h.subscribeToPower(h.config.Topics.EnergyMachining, events.TOPIC_POWER_USAGE, h.state.PowerUsage.Machining)
 
+	h.subscribe(h.config.Topics.KeyholderName, h.onKeyholderChange)
+
 	//token := h.client.Publish("/access-control-system/footest", 0, false, "barbar")
 	//token.WaitTimeout(5 * time.Second)
 
@@ -274,11 +276,19 @@ func (h *MqttManager) onDevicesChange(client mqtt.Client, message mqtt.Message) 
 		return
 	}
 
-	logrus.Debug("New devices data. ", string(message.Payload()))
+	logrus.Debug("New devices data: ", string(message.Payload()))
 
 	h.state.SpaceDevices.PeopleAndDevices = devices
 	h.state.SpaceDevices.Timestamp = time.Now().Unix()
 	h.events.Emit(events.TOPIC_SPACE_DEVICES)
+}
+
+func (h *MqttManager) onKeyholderChange(client mqtt.Client, message mqtt.Message) {
+	keyholder := string(message.Payload())
+	logrus.Debug("New keyholder data: ", keyholder)
+
+	h.state.Open.Keyholder = keyholder
+	h.events.Emit(events.TOPIC_KEYHOLDER)
 }
 
 func (h *MqttManager) newSpaceState() {

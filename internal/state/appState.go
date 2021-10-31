@@ -17,6 +17,7 @@ type OpenValueTs struct {
 }
 
 type OpenState struct {
+	Keyholder string
 	Space     *OpenValueTs
 	Radstelle *OpenValueTs
 	Lab3d     *OpenValueTs

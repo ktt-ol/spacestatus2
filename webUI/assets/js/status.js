@@ -27,7 +27,7 @@ function initEventSource() {
         addBodyClass('startup-error');
     }, START_FAIL_AFTER);
 
-    source = new EventSource('/api/statusStream?spaceOpen=1&radstelleOpen=1&machining=1&spaceDevices=1&powerUsage=1&lab3dOpen=1&mqtt=1');
+    source = new EventSource('/api/statusStream?spaceOpen=1&radstelleOpen=1&machining=1&spaceDevices=1&powerUsage=1&lab3dOpen=1&mqtt=1&keyholder=1');
     source.onopen = function () {
         console.log('EventSource is open');
         removeBodyClass('connection-error')
@@ -56,6 +56,10 @@ function initEventSource() {
             setText('spaceBrokerOnline_status', 'Offline!');
             setOnlyClass('spaceBrokerOnline_style', 'danger');
         }
+    });
+    source.addEventListener('keyholder', function (e) {
+        var keyholder = e.data;
+        setText('keyholder_name', keyholder);
     });
 
     addOpenListener(source, 'spaceOpen');
