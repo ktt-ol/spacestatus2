@@ -38,19 +38,27 @@ td:first-child {
 }
 
 .location.Space {
-    color: #008000;
+    color: #2ecc71;
 }
 
 .location.Radstelle {
-    color: #9696fd;
+    color: #1f3a93;
 }
 
 .location.Fräse {
-    color: #fdca96;
+    color: #fcb900;
 }
 
 .location.Holz {
-    color: #761c19;
+    color: #96411b;
+}
+
+.location.Lager {
+    color: #19b5fe;
+}
+
+.location.Grillplatz {
+    color: #d91e18;
 }
 
 .location:after {
