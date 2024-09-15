@@ -22,6 +22,15 @@ cp config.example.toml config.toml
 vim config.toml 
 ```
 
+### Old Go
+
+Install an old Go version:
+```bash
+go install golang.org/dl/go1.13.15@latest
+go1.13.15 download
+```
+
+
 ## Build with Docker
 
 This script creates a docker image with proper Go build environment and uses this to build the binary. All dependencies 

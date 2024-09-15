@@ -1,9 +1,10 @@
 package state
 
 import (
+	"errors"
+
 	"github.com/ktt-ol/spaceDevices/pkg/structs"
 	"github.com/ktt-ol/status2/internal/events"
-	"errors"
 )
 
 type MqttState struct {
@@ -13,15 +14,18 @@ type MqttState struct {
 
 type OpenValueTs struct {
 	Value     OpenValue `json:"state"`
-	Timestamp int64 `json:"timestamp"`
+	Timestamp int64     `json:"timestamp"`
 }
 
 type OpenState struct {
-	Keyholder string
-	Space     *OpenValueTs
-	Radstelle *OpenValueTs
-	Lab3d     *OpenValueTs
-	Machining *OpenValueTs
+	Keyholder            string
+	Space                *OpenValueTs
+	Radstelle            *OpenValueTs
+	Lab3d                *OpenValueTs
+	KeyholderMachining   string
+	Machining            *OpenValueTs
+	KeyholderWoodworking string
+	Woodworking          *OpenValueTs
 }
 
 func (os *OpenState) OpenStateForEvent(event events.EventName) (*OpenValueTs, error) {
@@ -34,6 +38,8 @@ func (os *OpenState) OpenStateForEvent(event events.EventName) (*OpenValueTs, er
 		return os.Lab3d, nil
 	case events.TOPIC_MACHINING_OPEN_STATE:
 		return os.Machining, nil
+	case events.TOPIC_WOODWORKING_OPEN_STATE:
+		return os.Woodworking, nil
 	default:
 		return nil, errors.New("Not an open state event: " + string(event))
 	}
@@ -50,9 +56,9 @@ type PowerValueTs struct {
 }
 
 type PowerUsageState struct {
-	Front *PowerValueTs `json:"front"`
-	Back  *PowerValueTs `json:"back"`
-	Machining  *PowerValueTs `json:"machining"`
+	Front     *PowerValueTs `json:"front"`
+	Back      *PowerValueTs `json:"back"`
+	Machining *PowerValueTs `json:"machining"`
 }
 
 type FreifunkState struct {
@@ -66,6 +72,7 @@ type State struct {
 	SpaceDevices *SpaceDevicesState
 	PowerUsage   *PowerUsageState
 	Freifunk     *FreifunkState
+	Backdoor     string
 }
 
 func NewDefaultState() *State {
@@ -75,10 +82,11 @@ func NewDefaultState() *State {
 			SpaceBrokerOnline: false,
 		},
 		Open: &OpenState{
-			Space:     &OpenValueTs{Value: NONE, Timestamp: 0},
-			Radstelle: &OpenValueTs{Value: NONE, Timestamp: 0},
-			Lab3d:     &OpenValueTs{Value: NONE, Timestamp: 0},
-			Machining: &OpenValueTs{Value: NONE, Timestamp: 0},
+			Space:       &OpenValueTs{Value: NONE, Timestamp: 0},
+			Radstelle:   &OpenValueTs{Value: NONE, Timestamp: 0},
+			Lab3d:       &OpenValueTs{Value: NONE, Timestamp: 0},
+			Machining:   &OpenValueTs{Value: NONE, Timestamp: 0},
+			Woodworking: &OpenValueTs{Value: NONE, Timestamp: 0},
 		},
 		SpaceDevices: &SpaceDevicesState{
 			PeopleAndDevices: structs.PeopleAndDevices{
@@ -90,9 +98,9 @@ func NewDefaultState() *State {
 			Timestamp: 0,
 		},
 		PowerUsage: &PowerUsageState{
-			Front: &PowerValueTs{Value: 0.0, Timestamp: 0},
-			Back:  &PowerValueTs{Value: 0.0, Timestamp: 0},
-			Machining:  &PowerValueTs{Value: 0.0, Timestamp: 0},
+			Front:     &PowerValueTs{Value: 0.0, Timestamp: 0},
+			Back:      &PowerValueTs{Value: 0.0, Timestamp: 0},
+			Machining: &PowerValueTs{Value: 0.0, Timestamp: 0},
 		},
 		Freifunk: &FreifunkState{
 			ClientCount: 0,

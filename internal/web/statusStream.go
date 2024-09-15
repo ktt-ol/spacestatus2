@@ -1,11 +1,12 @@
 package web
 
 import (
-	"github.com/ktt-ol/status2/internal/events"
 	"io"
-	"github.com/ktt-ol/status2/internal/state"
-	"github.com/gin-gonic/gin"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/ktt-ol/status2/internal/events"
+	"github.com/ktt-ol/status2/internal/state"
 )
 
 type ssEvent struct {
@@ -61,6 +62,12 @@ func StatusStream(ev events.EventManager, appState *state.State, group *gin.Rout
 			sendAndRegister(events.TOPIC_KEYHOLDER, func() interface{} {
 				return appState.Open.Keyholder
 			})
+			sendAndRegister(events.TOPIC_KEYHOLDER_MACHINING, func() interface{} {
+				return appState.Open.KeyholderMachining
+			})
+			sendAndRegister(events.TOPIC_KEYHOLDER_WOODWORKING, func() interface{} {
+				return appState.Open.KeyholderWoodworking
+			})
 
 			sendAndRegister(events.TOPIC_SPACE_OPEN_STATE, func() interface{} {
 				return appState.Open.Space
@@ -74,6 +81,9 @@ func StatusStream(ev events.EventManager, appState *state.State, group *gin.Rout
 			sendAndRegister(events.TOPIC_MACHINING_OPEN_STATE, func() interface{} {
 				return appState.Open.Machining
 			})
+			sendAndRegister(events.TOPIC_WOODWORKING_OPEN_STATE, func() interface{} {
+				return appState.Open.Woodworking
+			})
 
 			sendAndRegister(events.TOPIC_SPACE_DEVICES, func() interface{} {
 				return appState.SpaceDevices
@@ -84,6 +94,10 @@ func StatusStream(ev events.EventManager, appState *state.State, group *gin.Rout
 			})
 			sendAndRegister(events.TOPIC_FREIFUNK, func() interface{} {
 				return appState.Freifunk
+			})
+
+			sendAndRegister(events.TOPIC_BACKDOOR_BOLT_CONTACT, func() interface{} {
+				return appState.Backdoor
 			})
 
 			return false

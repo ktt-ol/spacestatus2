@@ -8,6 +8,7 @@ var timestamps = {
     spaceDevices: 0,
     lab3dOpen: 0,
     machining: 0,
+    woodworking: 0,
     // freifunk: 0,
     // weather: 0,
     energyFront: 0,
@@ -27,7 +28,7 @@ function initEventSource() {
         addBodyClass('startup-error');
     }, START_FAIL_AFTER);
 
-    source = new EventSource('/api/statusStream?spaceOpen=1&radstelleOpen=1&machining=1&spaceDevices=1&powerUsage=1&lab3dOpen=1&mqtt=1&keyholder=1');
+    source = new EventSource('/api/statusStream?spaceOpen=1&radstelleOpen=1&machining=1&woodworking=1&spaceDevices=1&powerUsage=1&lab3dOpen=1&mqtt=1&keyholder=1&keyholder_machining=1&keyholder_woodworking=1');
     source.onopen = function () {
         console.log('EventSource is open');
         removeBodyClass('connection-error')
@@ -57,15 +58,16 @@ function initEventSource() {
             setOnlyClass('spaceBrokerOnline_style', 'danger');
         }
     });
-    source.addEventListener('keyholder', function (e) {
-        var keyholder = e.data;
-        setText('keyholder_name', keyholder);
-    });
+    
+    addKeyHolderListener(source, 'keyholder');
+    addKeyHolderListener(source, 'keyholder_machining');
+    addKeyHolderListener(source, 'keyholder_woodworking');
 
     addOpenListener(source, 'spaceOpen');
     addOpenListener(source, 'lab3dOpen');
     addOpenListener(source, 'radstelleOpen');
     addOpenListener(source, 'machining');
+    addOpenListener(source, 'woodworking');
 
 
     source.addEventListener('spaceDevices', function (e) {
@@ -112,11 +114,17 @@ function checkConnection() {
     setTimeout(checkConnection, CHECK_INTERVAL);
 }
 
+function addKeyHolderListener(source, topic) {
+    source.addEventListener(topic, function (e) {
+        var keyholder = e.data;
+        setText(topic + '_name', keyholder);
+    });
+}
+
 function addOpenListener(source, topic) {
     source.addEventListener(topic, function (e) {
 
         var data = JSON.parse(e.data);
-
         timestamps[topic] = data.timestamp;
         var status = '?';
         var style = '';

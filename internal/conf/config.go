@@ -36,16 +36,24 @@ type MqttConf struct {
 type MqttTopicsConf struct {
 	SpaceInternalBrokerTopic string
 	Devices                  string
-	StateSpace               string
-	StateSpaceNext           string
-	StateRadstelle           string
-	StateLab3d               string
-	StateMachining           string
-	EnergyFront              string
-	EnergyBack               string
-	EnergyMachining			 string
+
+	StateSpace       string
+	StateSpaceNext   string
+	StateRadstelle   string
+	StateLab3d       string
+	StateMachining   string
+	StateWoodworking string
+
+	EnergyFront     string
+	EnergyBack      string
+	EnergyMachining string
+
 	KeyholderId              string
 	KeyholderName            string
+	KeyholderNameMachining   string
+	KeyholderNameWoodworking string
+
+	BackdoorBoltContact string
 }
 
 type MySqlConf struct {

@@ -1,19 +1,20 @@
 package mqtt
 
 import (
-	"github.com/eclipse/paho.mqtt.golang"
 	"crypto/tls"
-	"time"
-	"github.com/ktt-ol/status2/internal/conf"
-	"github.com/sirupsen/logrus"
 	"crypto/x509"
+	"encoding/json"
 	"io/ioutil"
+	"strconv"
+	"time"
+
+	"github.com/bep/debounce"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/ktt-ol/spaceDevices/pkg/structs"
+	"github.com/ktt-ol/status2/internal/conf"
 	"github.com/ktt-ol/status2/internal/events"
 	"github.com/ktt-ol/status2/internal/state"
-	"strconv"
-	"github.com/bep/debounce"
-	"encoding/json"
-	"github.com/ktt-ol/spaceDevices/pkg/structs"
+	"github.com/sirupsen/logrus"
 )
 
 const CLIENT_ID = "status2Go"
@@ -86,7 +87,7 @@ func (h *MqttManager) SendNewSpaceStatus(status state.OpenValue) {
 	stLogger.Info("Sending new space status mqtt value.")
 
 	h.publish(h.config.Topics.StateSpace, string(status))
-	// reset the keyholder, because we don't this anymore 
+	// reset the keyholder, because we don't this anymore
 	h.publish(h.config.Topics.KeyholderName, "")
 	h.publish(h.config.Topics.KeyholderId, "")
 }
@@ -125,6 +126,7 @@ func (h *MqttManager) onConnect(client mqtt.Client) {
 	h.subscribeToOpenState(h.config.Topics.StateRadstelle, events.TOPIC_RADSTELLE_OPEN_STATE, h.state.Open.Radstelle)
 	h.subscribeToOpenState(h.config.Topics.StateLab3d, events.TOPIC_LAB_3D_OPEN_STATE, h.state.Open.Lab3d)
 	h.subscribeToOpenState(h.config.Topics.StateMachining, events.TOPIC_MACHINING_OPEN_STATE, h.state.Open.Machining)
+	h.subscribeToOpenState(h.config.Topics.StateWoodworking, events.TOPIC_WOODWORKING_OPEN_STATE, h.state.Open.Woodworking)
 
 	h.subscribe(h.config.Topics.Devices, h.onDevicesChange)
 
@@ -132,11 +134,11 @@ func (h *MqttManager) onConnect(client mqtt.Client) {
 	h.subscribeToPower(h.config.Topics.EnergyBack, events.TOPIC_POWER_USAGE, h.state.PowerUsage.Back)
 	h.subscribeToPower(h.config.Topics.EnergyMachining, events.TOPIC_POWER_USAGE, h.state.PowerUsage.Machining)
 
-	h.subscribe(h.config.Topics.KeyholderName, h.onKeyholderChange)
+	h.subscribeToKeyholderState(h.config.Topics.KeyholderName, events.TOPIC_KEYHOLDER, &h.state.Open.Keyholder)
+	h.subscribeToKeyholderState(h.config.Topics.KeyholderNameMachining, events.TOPIC_KEYHOLDER_MACHINING, &h.state.Open.KeyholderMachining)
+	h.subscribeToKeyholderState(h.config.Topics.KeyholderNameWoodworking, events.TOPIC_KEYHOLDER_WOODWORKING, &h.state.Open.KeyholderWoodworking)
 
-	//token := h.client.Publish("/access-control-system/footest", 0, false, "barbar")
-	//token.WaitTimeout(5 * time.Second)
-
+	h.subscribe(h.config.Topics.BackdoorBoltContact, h.onBackdoorBoltContactChange)
 }
 
 func (h *MqttManager) onConnectionLost(client mqtt.Client, err error) {
@@ -182,6 +184,22 @@ func (h *MqttManager) subscribeToOpenState(topic string, eventName events.EventN
 	})
 }
 
+func (h *MqttManager) subscribeToKeyholderState(topic string, eventName events.EventName, state *string) {
+	h.subscribe(topic, func(client mqtt.Client, message mqtt.Message) {
+		topicLogger := mqttLogger.WithField("topic", topic)
+		keyholder := string(message.Payload())
+		if keyholder == "" {
+			topicLogger.Debug("Empty message")
+			return
+		}
+
+		topicLogger.WithField("keyholder", keyholder).Info("Set new keyholder.")
+		*state = keyholder
+		logrus.WithField("keyholder", keyholder).WithField("eventName", eventName).Info("setting new keyholder state")
+		h.events.Emit(eventName)
+	})
+}
+
 // subscribe to a power state change(e.g. front/back)
 // on event does: parse the new open state, change the value in the state and emit the event
 func (h *MqttManager) subscribeToPower(topic string, eventName events.EventName, powerState *state.PowerValueTs) {
@@ -189,13 +207,13 @@ func (h *MqttManager) subscribeToPower(topic string, eventName events.EventName,
 	h.subscribe(topic, func(client mqtt.Client, message mqtt.Message) {
 		strMessage := string(message.Payload())
 
-		energy, err := strconv.ParseFloat(strMessage, 64);
+		energy, err := strconv.ParseFloat(strMessage, 64)
 		if err != nil {
 			mqttLogger.WithError(err).WithField("topic", topic).Warn("Invalid float value for power: ", strMessage)
 			return
 		}
 
-		energy /= 1000;
+		energy /= 1000
 
 		//mqttLogger.WithFields(logrus.Fields{
 		//	"topic": topic,
@@ -248,26 +266,26 @@ func (h *MqttManager) onSpaceOpenChange(client mqtt.Client, message mqtt.Message
 
 func (h *MqttManager) onDevicesChange(client mqtt.Client, message mqtt.Message) {
 	/*
-	{
-	  "people": [
 		{
-		  "name": "Hans",
-		  "devices": [
+		  "people": [
 			{
-			  "name": "S8",
-			  "location": "Space"
-			},
-			{
-			  "name": "T430",
-			  "location": "Space"
+			  "name": "Hans",
+			  "devices": [
+				{
+				  "name": "S8",
+				  "location": "Space"
+				},
+				{
+				  "name": "T430",
+				  "location": "Space"
+				}
+			  ]
 			}
-		  ]
+		  ],
+		  "peopleCount": 1,
+		  "deviceCount": 25,
+		  "unknownDevicesCount": 12
 		}
-	  ],
-	  "peopleCount": 1,
-	  "deviceCount": 25,
-	  "unknownDevicesCount": 12
-	}
 	*/
 
 	devices := structs.PeopleAndDevices{}
@@ -283,12 +301,12 @@ func (h *MqttManager) onDevicesChange(client mqtt.Client, message mqtt.Message) 
 	h.events.Emit(events.TOPIC_SPACE_DEVICES)
 }
 
-func (h *MqttManager) onKeyholderChange(client mqtt.Client, message mqtt.Message) {
-	keyholder := string(message.Payload())
-	logrus.Debug("New keyholder data: ", keyholder)
+func (h *MqttManager) onBackdoorBoltContactChange(_ mqtt.Client, message mqtt.Message) {
+	contactStatus := string(message.Payload())
+	logrus.Debug("New backdoor data: ", contactStatus)
 
-	h.state.Open.Keyholder = keyholder
-	h.events.Emit(events.TOPIC_KEYHOLDER)
+	h.state.Backdoor = contactStatus
+	h.events.Emit(events.TOPIC_BACKDOOR_BOLT_CONTACT)
 }
 
 func (h *MqttManager) newSpaceState() {
