@@ -58,7 +58,7 @@ function initEventSource() {
             setOnlyClass('spaceBrokerOnline_style', 'danger');
         }
     });
-    
+
     addKeyHolderListener(source, 'keyholder');
     addKeyHolderListener(source, 'keyholder_machining');
     addKeyHolderListener(source, 'keyholder_woodworking');
@@ -165,7 +165,8 @@ function makePersonHtml(personData) {
         html += '<span class="devices text-muted"> [';
         personData.devices.forEach(function (device) {
             if (device.name !== '') {
-                html += '<small class="location ' + device.location + '">' + device.name + '</small>';
+                let safeName = device.name.replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`)
+                html += '<small class="location ' + device.location + '">' + safeName + '</small>';
             }
         });
         html += ']</span>';
