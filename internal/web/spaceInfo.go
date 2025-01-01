@@ -1,10 +1,11 @@
 package web
 
 import (
-	"github.com/ktt-ol/status2/internal/state"
-	"github.com/gin-gonic/gin"
-	"time"
 	"fmt"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/ktt-ol/status2/internal/state"
 )
 
 // ?spaceOpen=1&radstelleOpen=1&machining=1&spaceDevices=1&powerUsage=1&lab3dOpen=1&mqtt=1
@@ -14,22 +15,20 @@ func SpaceInfo(st *state.State, group *gin.RouterGroup) {
 		nowInSeconds := time.Now().Unix()
 
 		data := map[string]interface{}{
-			"api":   "0.13",
-			"space": "Mainframe",
-			"logo":  "https://status.mainframe.io/assets/images/mainframe.png",
-			"url":   "https://mainframe.io/",
+			"api_compatibility": [...]string{"14", "15"},
+			"space":             "Mainframe",
+			"logo":              "https://status.mainframe.io/assets/images/mainframe.png",
+			"url":               "https://mainframe.io/",
 			"location": map[string]interface{}{
 				"address": "Bahnhofsplatz 10, 26122 Oldenburg, Germany",
 				"lat":     53.14402,
 				"lon":     8.21988,
 			},
 			"contact": map[string]interface{}{
-				"twitter":    "@HackspaceOL",
 				"email":      "vorstand@kreativitaet-trifft-technik.de",
 				"ml":         "https://mailman.ktt-ol.de/postorius/lists/diskussion.lists.ktt-ol.de/",
 				"issue_mail": "hc@kreativitaet-trifft-technik.de",
 			},
-			"issue_report_channels": [...]string{"issue_mail"},
 			"state": map[string]interface{}{
 				"open":       st.Open.Space.Value.IsPublicOpen(),
 				"lastchange": st.Open.Space.Timestamp,
@@ -75,7 +74,6 @@ func SpaceInfo(st *state.State, group *gin.RouterGroup) {
 					"value":       st.PowerUsage.Machining.Value,
 					"description": fmt.Sprintf("Value changed %d sec. ago.", nowInSeconds-st.PowerUsage.Machining.Timestamp),
 				},
-
 			},
 			"feeds": map[string]interface{}{
 				"calendar": map[string]interface{}{
