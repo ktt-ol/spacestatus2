@@ -160,7 +160,8 @@ function addOpenListener(source, topic) {
 }
 
 function makePersonHtml(personData) {
-    var html = '<span class="person"><span class="name">' + personData.name + '</span>';
+    let safePersonName = personData.name.replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`)
+    var html = '<span class="person"><span class="name">' + safePersonName + '</span>';
     if (personData.devices && personData.devices.length > 0) {
         html += '<span class="devices text-muted"> [';
         personData.devices.forEach(function (device) {
