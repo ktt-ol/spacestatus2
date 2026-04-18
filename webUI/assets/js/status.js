@@ -1,7 +1,8 @@
 var CHECK_INTERVAL = 5 * 60 * 1000;
 var START_FAIL_AFTER = 3 * 1000;
 
-var lastkeepalive, source, startUpTimer;
+var lastkeepalive, source, startUpTimer, checkConnTimer, reconnectTimer;
+var reconnecting = false;
 
 var timestamps = {
     spaceOpen: 0,
@@ -17,12 +18,31 @@ var timestamps = {
 };
 
 function statusInit() {
+    if (source) return;
     initEventSource();
     updateLastUpdates();
 }
 
+function scheduleReconnect() {
+    if (reconnecting) return;
+    reconnecting = true;
+    clearTimeout(startUpTimer);
+    clearTimeout(checkConnTimer);
+    clearTimeout(reconnectTimer);
+    if (source) {
+        source.onopen = source.onerror = null;
+        try { source.close(); } catch (e) {}
+        source = null;
+    }
+    reconnectTimer = setTimeout(function () {
+        reconnecting = false;
+        initEventSource();
+    }, 5000);
+}
+
 function initEventSource() {
     clearTimeout(startUpTimer);
+    clearTimeout(checkConnTimer);
 
     startUpTimer = setTimeout(function () {
         addBodyClass('startup-error');
@@ -37,10 +57,8 @@ function initEventSource() {
 
     source.onerror = function (err) {
         console.error('EventSource error.', err);
-        clearTimeout(startUpTimer);
         addBodyClass('connection-error');
-        source.close();
-        setTimeout(initEventSource, 5000);
+        scheduleReconnect();
     };
 
     source.addEventListener('mqtt', function (e) {
@@ -78,7 +96,7 @@ function initEventSource() {
         if (data.people && data.people.length > 0) {
             personList = data.people.map(makePersonHtml).join('');
         }
-        setText('personList', personList);
+        setHtml('personList', personList);
         setText('anonPeopleCount', data.peopleCount - data.people.length);
         setText('devicesCount', data.unknownDevicesCount);
     });
@@ -99,19 +117,18 @@ function initEventSource() {
         lastkeepalive = Date.now();
     }, false);
 
-    setTimeout(checkConnection, CHECK_INTERVAL);
+    checkConnTimer = setTimeout(checkConnection, CHECK_INTERVAL);
 }
 
 // check whether we have seen a keepalive event within the last 20 minutes or are disconnected; reconnect if necessary
 function checkConnection() {
     console.log('Checking connection...');
-    if ((Date.now() - lastkeepalive > 20 * 60 * 1000) || source.readyState === 2) {
-        source.close();
-        console.warn('Restarting event source.', Date.now() - lastkeepalive, source.readyState);
-        setTimeout(initEventSource, 3000);
+    if (!source || (Date.now() - lastkeepalive > 20 * 60 * 1000) || source.readyState === 2) {
+        scheduleReconnect();
         return;
     }
-    setTimeout(checkConnection, CHECK_INTERVAL);
+    
+    checkConnTimer = setTimeout(checkConnection, CHECK_INTERVAL);
 }
 
 function addKeyHolderListener(source, topic) {
@@ -207,7 +224,10 @@ function updateLastUpdates() {
 }
 
 function setText(domId, newText) {
-    document.getElementById(domId).innerHTML = newText;
+    document.getElementById(domId).textContent = newText;
+}
+function setHtml(domId, newHtml) {
+    document.getElementById(domId).innerHTML = newHtml;
 }
 
 function setOnlyClass(domId, className) {
