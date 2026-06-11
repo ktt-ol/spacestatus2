@@ -16,6 +16,28 @@ section {
     margin-right: 30px;
 }
 
+[data-bs-theme="dark"] .navbar-brand img {
+    filter: invert(1);
+}
+
+[data-bs-theme="dark"] .table-danger {
+    --bs-table-bg: rgba(220, 53, 69, 0.15);
+    --bs-table-color: var(--bs-body-color);
+    --bs-table-border-color: var(--bs-border-color);
+}
+
+[data-bs-theme="dark"] .table-success {
+    --bs-table-bg: rgba(25, 135, 84, 0.15);
+    --bs-table-color: var(--bs-body-color);
+    --bs-table-border-color: var(--bs-border-color);
+}
+
+[data-bs-theme="dark"] .table-warning {
+    --bs-table-bg: rgba(255, 193, 7, 0.15);
+    --bs-table-color: var(--bs-body-color);
+    --bs-table-border-color: var(--bs-border-color);
+}
+
 #mainframeLogo img,
 #fabolabLogo img {
     margin-top: 10px;
@@ -91,7 +113,7 @@ footer {
     margin-top: 20px;
     width: 100%;
     text-align: center;
-    background-color: #fff;
+    background-color: var(--bs-body-bg);
 }
 
 .connection-error-warning, .startup-error-warning {
