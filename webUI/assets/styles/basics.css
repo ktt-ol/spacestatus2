@@ -22,6 +22,10 @@ section {
     margin-bottom: 20px;
 }
 
+.page-status .table {
+    margin-bottom: 1.75rem;
+}
+
 td:first-child {
     width: 312px;
 }
