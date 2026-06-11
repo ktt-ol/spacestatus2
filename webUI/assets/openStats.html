@@ -7,6 +7,18 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <script>
+    (function() {
+        var m = window.matchMedia('(prefers-color-scheme: dark)');
+        function apply(e) {
+            document.documentElement.setAttribute(
+                'data-bs-theme', e.matches ? 'dark' : 'light'
+            );
+        }
+        apply(m);
+        m.addEventListener('change', apply);
+    })();
+    </script>
     <link href="assets/styles/bootstrap.min.css" rel="stylesheet">
     <link href="assets/styles/basics.css" rel="stylesheet">
 </head>
