@@ -73,7 +73,7 @@ function initEventSource() {
             setOnlyClass('spaceBrokerOnline_style', '');
         } else {
             setText('spaceBrokerOnline_status', 'Offline!');
-            setOnlyClass('spaceBrokerOnline_style', 'danger');
+            setOnlyClass('spaceBrokerOnline_style', 'table-danger');
         }
     });
 
@@ -148,27 +148,27 @@ function addOpenListener(source, topic) {
         switch (data.state) {
             case 'none':
                 status = 'ZU!';
-                style = 'danger';
+                style = 'table-danger';
                 break;
             case 'open':
                 status = 'AUF!';
-                style = 'success';
+                style = 'table-success';
                 break;
             case 'open+':
                 status = 'AUF+!';
-                style = 'success';
+                style = 'table-success';
                 break;
             case 'keyholder':
                 status = 'ZU (Keyholder only!)';
-                style = 'danger';
+                style = 'table-danger';
                 break;
             case 'member':
                 status = 'ZU (Member only!)';
-                style = 'danger';
+                style = 'table-danger';
                 break;
             case 'closing':
                 status = 'GLEICH ZU!';
-                style = 'warning';
+                style = 'table-warning';
                 break;
         }
         setText(topic + '_status', status);

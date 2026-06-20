@@ -7,56 +7,63 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <script>
+    (function() {
+        var m = window.matchMedia('(prefers-color-scheme: dark)');
+        function apply(e) {
+            document.documentElement.setAttribute(
+                'data-bs-theme', e.matches ? 'dark' : 'light'
+            );
+        }
+        apply(m);
+        m.addEventListener('change', apply);
+    })();
+    </script>
     <link href="../assets/styles/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/styles/basics.css" rel="stylesheet">
 </head>
 <body>
 
-<div class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-expand-sm bg-body-tertiary border-bottom mb-5">
     <div class="container-fluid">
-        <div class="navbar-header">
-            <button class="navbar-toggle" type="button"
-                    onclick="document.getElementById('navbar-main').classList.toggle('in')">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="//mainframe.io" class="navbar-brand">
-                <img src="../assets/images/top_logo.png" alt="Mainframe"/>
-            </a>
-        </div>
-        <div class="navbar-collapse collapse" ng-class="isCollapsed ? '' : 'in'" id="navbar-main">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="/">Status</a>
+        <a href="//mainframe.io" class="navbar-brand">
+            <img src="../assets/images/top_logo.png" alt="Mainframe"/>
+        </a>
+        <button class="navbar-toggler" type="button"
+                onclick="document.getElementById('navbar-main').classList.toggle('show')">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar-main">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Status</a>
                 </li>
-                <li>
-                    <a href="/openStats">Öffnungsstatistiken</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="/openStats">Öffnungsstatistiken</a>
                 </li>
             </ul>
-            <ul id="inprintLink" class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="//www.kreativitaet-trifft-technik.de/impressum" class="navbar-link">Impressum</a>
+            <ul id="inprintLink" class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="//www.kreativitaet-trifft-technik.de/impressum">Impressum</a>
                 </li>
             </ul>
         </div>
     </div>
-</div>
+</nav>
 
 <div class="container page-switch">
 
     <h1>Switch</h1>
 
-    <form class="form-inline" action="" method="post">
+    <form class="d-flex flex-column gap-3" action="" method="post">
 
     {{if .showPwField}}
-        <div class="form-group">
+        <div class="mb-3">
             <label for="pw">Password</label>
             <div class="pw-input">
                 <input type="password" class="form-control" name="password" id="pw" placeholder="Password"
                        value="{{ .password }}">
-                <button class="btn btn-default btn-link" onclick="pwToUrl(); return false">Als URL</button>
+                <button class="btn btn-secondary btn-link" onclick="pwToUrl(); return false">Als URL</button>
             </div>
         </div>
     {{end}}
