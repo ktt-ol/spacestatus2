@@ -19,11 +19,15 @@ StateSpaceNext = "/access-control-system/space-state-next"
 StateRadstelle = "/access-control-system/radstelle-state"
 StateLab3d = "/access-control-system/3dlab-state"
 StateMachining = "/access-control-system/machining/state"
-EnergyFront = "/test/stromVorne/power"
-EnergyBack = "/test/stromHinten/power"
-EnergyMachining = "/test/stromFraese/power"
+StateWoodworking = "/access-control-system/woodworking/state"
+EnergyFront = "/sensor/energy/easymeter/front/power"
+EnergyBack = "/sensor/energy/easymeter/back/power"
+EnergyMachining = "/sensor/energy/easymeter/machining/power"
 KeyholderId = "/access-control-system/keyholder/id"
 KeyholderName = "/access-control-system/keyholder/name"
+KeyholderNameMachining = "/access-control-system/machining/keyholder/name"
+KeyholderNameWoodworking = "/access-control-system/woodworking/keyholder/name"
+BackdoorBoltContact = "/access-control-system/backdoor/bolt-contact"
 
 
 [mysql]
